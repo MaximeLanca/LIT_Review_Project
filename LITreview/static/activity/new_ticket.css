@@ -1,0 +1,61 @@
+
+.border_base {
+    border: solid;
+    width: 100%;
+    border-top: none; 
+    margin-top: -30px;
+}
+
+.title_base {
+    position: relative;
+    top: 30px;
+    display: flex;
+    justify-content:center
+}
+
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-content:center;
+    width: 100%;
+}
+.ticket_title_field {
+    width: 1000px;
+    height: 20px;
+}
+.area_description_field {
+    width: 1000px;
+}
+
+.top_ticket_title_field  {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.picture_dowloading {
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.dowloading_field {
+    border: solid;
+    padding: 5px;
+    border-radius: 12px;
+}
+
+.send_button_a{
+    position: relative;
+    left: 1180px;
+    margin-right: 50px;
+}
+
+.send_button_b {
+    border: solid;
+    padding: 5px;
+    border-radius: 12px;
+    width: 55px;
+}

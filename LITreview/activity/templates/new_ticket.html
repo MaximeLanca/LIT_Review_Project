@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}new_ticket{% endblock %}
+
+{% block head_css %}
+<link rel="stylesheet" href="{% static 'activity/new_ticket.css' %}">
+{% endblock %}
+
+{% block content %}
+    <main class="border_base">
+        <section>
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="title_base">
+                    <p>Créer un ticket</p>
+                </div>
+                {{form.as_p}}
+                <input class="send_button_b" type="submit" value="Envoyer"/>
+            </form>
+        </section>
+        
+    </main>
+    
+{% endblock %} 

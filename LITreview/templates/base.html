@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <title>{% block title %}Template base{% endblock %}</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{% static 'litreview/styles.css' %}" />
+        <link rel="stylesheet" href="{% static 'activity/new_ticket.css' %}">
+    </head>
+    <body>
+        <header class="border_header">
+            <div class="box_header">
+                <div>
+                    <h4>LITReview</h4>
+                </div>
+                <div class="button_box_header">
+                    <div><a href="">Flux</a></div>
+                    <div><a href="">Posts</a></div>
+                    <div><a href="">Abonnements</a></div>
+                    <div><a href="">Se déconnecter</a></div>
+                </div>
+            </div>
+        </header>
+        {% block content %}{% endblock %}           
+    </body>
+</html>

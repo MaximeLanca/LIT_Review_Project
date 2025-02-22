@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}new_review{% endblock %}
+
+{% block head_css %}
+<!-- <link rel="stylesheet" href="{% static 'activity/new_review.css' %}"> -->
+{% endblock %}
+
+{% block content %}
+    <main>
+        <section class="border_base">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <p>Critique</p>
+                <div>
+                    {{form.as_p}}
+                </div>
+                
+            </form>
+        </section>
+        
+    </main>
+    
+{% endblock %} 

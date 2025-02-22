@@ -1,0 +1,23 @@
+.box_header{
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    width: 53%;
+}
+ 
+.button_box_header {
+    margin-left: auto;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    width: 500px;
+}
+
+.border_header {
+    border: solid;
+    width: 100%; 
+}
+
+header {
+    width: 1097px;
+}
