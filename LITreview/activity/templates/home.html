@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <main class="border_base">
+        <section>
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input class="send_button_b" type="submit" value="Demander une critique"/>
+                <input class="send_button_b" type="submit" value="Créer une critique"/>
+                {{form.as_p}} 
+            </form>
+        </section>
+    </main>
+    
+{% endblock %} 
