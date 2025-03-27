@@ -5,7 +5,7 @@ from django import forms
 class CustomUserCreationForm(UserCreationForm):
     email= forms.EmailField(required=True, label="Adresse Email")
 
-    class Meta:
+    class Meta(UserCreationForm.Meta):
         model = User
         fields=("username","email","password1","password2")
 

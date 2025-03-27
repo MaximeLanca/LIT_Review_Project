@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Feed{% endblock %}
+
+{% block head_css %}
+{% endblock %}
+
+{% block content %}
+    <main>
+        <section>
+            <h2>Flux</h2>
+            <ul>
+                {% for followed_user in followed_users %}
+                <li>{{followed_user.username}}</li>
+                {% endfor %}
+            </ul>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="title_base">
+                    <p>Suivre un utilisateur</p>
+                </div>
+                {{form.as_p}}
+                <input class="send_button_b" type="submit" value="Envoyer"/>
+            </form>
+        </section>
+    </main>
+    
+{% endblock %} 
