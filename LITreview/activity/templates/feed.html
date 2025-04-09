@@ -10,17 +10,17 @@
     <main>
         <section>
             <h2>Flux</h2>
-            <a href="{% url 'create_review' %}">Demander une Review</a>
-            <a href="{% url 'create_review' %}">Créer une Review</a>
             {% for ticket in tickets %}
+                <a href="{% url 'create_review' %}">Demander une Review</a>
+                <a href="{% url 'create_review' %}">Créer une Review</a>
                 <div>
                     <h3>{{ticket.title}}</h3>
                     <p>ticket.description</p>
                     <p>Posté par: {{ticket.user.username}}</p>
                     <p>Crée le: {{ticket.create_at}}</p>
                     {% if ticket.image %}
-                    <img src="{{ticket.image.url}}" alt="Image du ticket"
-                    <a href="{% url 'create_review' ticket.id %}">Créer une Review</a>
+                    <img src="{{ticket.image.url}}" alt="Image du ticket">
+                    <a href="{% url 'create_review'%}">Créer une Review</a>
                     {% endif %}
                 </div>
             {% endfor %}

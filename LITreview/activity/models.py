@@ -6,7 +6,7 @@ from django.db import models
 class Ticket(models.Model):
     title = models.CharField(max_length=128)
     description = models.TextField()
-    image = models.FileField(upload_to="tickets/")
+    image = models.FileField(upload_to="media/tickets/")
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="tickets")
     time_created = models.DateTimeField(auto_now_add=True)
 

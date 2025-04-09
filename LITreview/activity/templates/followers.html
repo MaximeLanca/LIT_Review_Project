@@ -12,16 +12,29 @@
             <h2>Flux</h2>
             <ul>
                 {% for followed_user in followed_users %}
-                <li>{{followed_user.username}}</li>
+                <li>
+                    {{ followed.followed.username }} 
+                    <a href=>Ne plus suivre</a>
+                </li>
+                {% empty %}
+                <li>Vous ne suivez personne.</li>
                 {% endfor %}
             </ul>
             <form action="" method="POST">
                 {% csrf_token %}
                 <div class="title_base">
                     <p>Suivre un utilisateur</p>
-                </div>
-                {{form.as_p}}
-                <input class="send_button_b" type="submit" value="Envoyer"/>
+                    <ul>
+                        {% for user in not_followed_users %}
+                            <li>
+                                {{ user.username }}
+                                <a href="">Suivre</a>
+                            </li>
+                        {% empty %}
+                            <li>Aucun utilisateur à suivre.</li>
+                        {% endfor %}
+                    </ul>
+                </section>
             </form>
         </section>
     </main>

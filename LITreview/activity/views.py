@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import TicketForm, ReviewForm
-from .models import Ticket
+from .models import Ticket, UserFollows
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.db import models
@@ -45,6 +45,28 @@ def display_feed_tickets(request):
 
 @login_required
 def display_followers(request):
-    followed_users = request.user
-    context = {"followed_users":followed_users}
-    return render(request,'followers.html',context )
+    followed_users = UserFollows.objects.filter(follower=request.user)
+    all_users = User.objects.exclude(id=request.user.id)
+    not_followed_users = all_users.exclude(id__in=[user.followed.id for user in followed_users])
+
+    context = {
+        "followed_users": followed_users,
+        "not_followed_users": not_followed_users,
+        "count_followed_users": followed_users.count(),
+    }
+    return render(request, 'followers.html', context)
+
+User = get_user_model()
+
+@login_required
+def follow_user(request, user_id):
+    user_to_follow = get_object_or_404(User, id=user_id)
+    if not UserFollows.objects.filter(follower=request.user, followed=user_to_follow).exists():
+        UserFollows.objects.create(follower=request.user, followed=user_to_follow)
+    return redirect('display_followers')
+
+@login_required
+def unfollow_user(request, user_id):
+    user_to_unfollow = get_object_or_404(User, id=user_id)
+    UserFollows.objects.filter(follower=request.user, followed=user_to_unfollow).delete()
+    return redirect('display_followers')
