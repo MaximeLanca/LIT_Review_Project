@@ -1,30 +1,33 @@
 {% extends 'base.html' %}
+{% load model_name %}
 {% load static %}
 
 {% block title %}Feed{% endblock %}
 
 {% block head_css %}
 {% endblock %}
-
 {% block content %}
-    <main>
-        <section>
-            <h2>Flux</h2>
-            {% for ticket in tickets %}
-                <a href="{% url 'create_review' %}">Demander une Review</a>
-                <a href="{% url 'create_review' %}">Créer une Review</a>
-                <div>
-                    <h3>{{ticket.title}}</h3>
-                    <p>ticket.description</p>
-                    <p>Posté par: {{ticket.user.username}}</p>
-                    <p>Crée le: {{ticket.create_at}}</p>
-                    {% if ticket.image %}
-                    <img src="{{ticket.image.url}}" alt="Image du ticket">
-                    <a href="{% url 'create_review'%}">Créer une Review</a>
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </section>
-    </main>
-    
-{% endblock %} 
+<main>
+    <h2>Mon flux</h2>
+    {% for item in feed_items %}
+        <div>
+            {% if item|model_name == 'ticket' %}
+                <h3>[TICKET] {{ item.title }}</h3>
+                <p>{{ item.description }}</p>
+                <p>Posté par : {{ item.user.username }}</p>
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="Image du ticket">
+                {% endif %}
+                <a href="{% url 'create_review' item.id %}">Répondre à ce ticket</a>
+            {% elif item|model_name == 'review' %}
+                <h3>[CRITIQUE] sur : {{ item.ticket.title }}</h3>
+                <p>{{ item.headline }} — Note : {{ item.rating }}/5</p>
+                <p>{{ item.body }}</p>
+                <p>Par : {{ item.user.username }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+</main>
+
+{% endblock %}
+
