@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'accounts',
     'activity',
     'subscriptions',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

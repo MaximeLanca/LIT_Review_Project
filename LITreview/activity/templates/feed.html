@@ -5,10 +5,17 @@
 {% block title %}Feed{% endblock %}
 
 {% block head_css %}
+<link rel="stylesheet" href="{% static 'activity/styles.css' %}">
 {% endblock %}
 {% block content %}
 <main>
     <h2>Mon flux</h2>
+    <div>
+        <a href="{% url 'create_ticket' %}" class="btn">Créer un ticket</a>
+    </div>
+    <div>
+        <a href="{% url 'create_ticket_and_review' %}" class="btn">Créer une critique</a>
+    </div>
     {% for item in feed_items %}
         <div>
             {% if item|model_name == 'ticket' %}
@@ -19,11 +26,26 @@
                     <img src="{{ item.image.url }}" alt="Image du ticket">
                 {% endif %}
                 <a href="{% url 'create_review' item.id %}">Répondre à ce ticket</a>
+            
             {% elif item|model_name == 'review' %}
-                <h3>[CRITIQUE] sur : {{ item.ticket.title }}</h3>
-                <p>{{ item.headline }} — Note : {{ item.rating }}/5</p>
-                <p>{{ item.body }}</p>
-                <p>Par : {{ item.user.username }}</p>
+                <div class="review-block">
+                    <p>Vous avez publié une critique</p>
+                    <h3>{{ item.headline }} - 
+                        {% for i in "12345"|slice:":item.rating"|make_list %}
+                            ★
+                        {% endfor %}
+                    </h3>
+                    <p>{{ item.body }}</p>
+                    <small>{{ item.time_created|date:"H:i, d F Y" }}</small>
+            
+                    <div class="ticket-preview">
+                        <p><strong>Ticket - {{ item.ticket.user.username }}</strong></p>
+                        <p>{{ item.ticket.title }} - {{ item.ticket.description }}</p>
+                        {% if item.ticket.image %}
+                            <img src="{{ item.ticket.image.url }}" alt="image du ticket" style="max-width: 200px;">
+                        {% endif %}
+                    </div>
+                </div>
             {% endif %}
         </div>
     {% endfor %}

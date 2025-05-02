@@ -12,7 +12,7 @@ def create_ticket(request):
         if form.is_valid():
             form.user = get_user_model().objects.first() #request.user 
             form.save()
-            return redirect('create_ticket')
+            return redirect('feed')
         print(form.errors)
     else:
         form= TicketForm()
@@ -20,13 +20,13 @@ def create_ticket(request):
     return render (request, 'new_ticket.html', context)
 
 
-def create_review(request):
+def create_review(request, ticket_id):
     if request.method =='POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
             form.user = request.user
             form.save()
-            return redirect('create_review')
+            return redirect('feed')
     else:
         form = ReviewForm()
     context = {'form': form}
@@ -35,8 +35,8 @@ def create_review(request):
 @login_required
 def create_ticket_and_review(request):
     if request.method == 'POST':
-        ticket_form = TicketForm(request.POST, request.FILES)
-        review_form = ReviewForm(request.POST)
+        ticket_form = TicketForm(request.POST, request.FILES, user=request.user)
+        review_form = ReviewForm(request.POST, user=request.user)
         
         if ticket_form.is_valid() and review_form.is_valid():
          
