@@ -12,7 +12,7 @@
         <section class="border_base">
             <form action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <p>Critique</p>
+                <p>Critique du ticket : <strong>{{ ticket.title }}</strong></p>
                 <div>
                     {{form.as_p}}
                     <input class="send_button_b" type="submit" value="Créer une critique"/>

@@ -19,17 +19,25 @@ class TicketForm(forms.ModelForm):
         return ticket
 
 class ReviewForm(forms.ModelForm):
+    RATING_CHOICES = [(i, str(i)) for i in range(6)]
+    rating = forms.ChoiceField(
+        choices=RATING_CHOICES,
+        widget=forms.RadioSelect,
+        label="Note"
+    )
     class Meta:
         model = Review
-        fields = ['ticket', 'rating', 'headline', 'body']
+        exclude = ['user', 'ticket']
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user',None)
+        self.ticket = kwargs.pop('ticket', None)
         super().__init__(*args, **kwargs)
-        
+
     def save(self,commit=True):
         review=super().save(commit=False)
         review.user = self.user
+        review.ticket = self.ticket
         review.save()
         return review
 

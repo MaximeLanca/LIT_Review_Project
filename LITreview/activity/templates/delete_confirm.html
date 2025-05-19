@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}new_review{% endblock %}
+
+{% block head_css %}
+<link rel="stylesheet" href="">
+{% endblock %}
+
+{% block content %}
+    <main>
+        <h2>Confirmer la suppression</h2>
+        <p>Êtes-vous sûr de vouloir supprimer ce post ?</p>
+        <form method="post">
+          {% csrf_token %}
+          <button type="submit">Oui, supprimer</button>
+          <a href="{% url 'display_user_posts' %}">Annuler</a>
+        </form>
+    </main>
+    
+{% endblock %}
+
+
+

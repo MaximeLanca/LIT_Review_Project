@@ -4,13 +4,15 @@ from .models import Ticket, UserFollows, Review
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.db import models
+from django.contrib import messages
 
 
 def create_ticket(request):
     if request.method == 'POST':
         form = TicketForm(request.POST, request.FILES)
         if form.is_valid():
-            form.user = get_user_model().objects.first() #request.user 
+            form.user = request.user
+            #form.user = get_user_model().objects.first() #request.user 
             form.save()
             return redirect('feed')
         print(form.errors)
@@ -19,18 +21,21 @@ def create_ticket(request):
     context = {'form': form}
     return render (request, 'new_ticket.html', context)
 
-
+@login_required
 def create_review(request, ticket_id):
-    if request.method =='POST':
-        form = ReviewForm(request.POST)
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+    if ticket.reviews.exists():
+        messages.error(request, "Ce ticket a déjà été critiqué.")
+        return redirect('feed')
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, user=request.user, ticket=ticket)
         if form.is_valid():
-            form.user = request.user
             form.save()
             return redirect('feed')
     else:
-        form = ReviewForm()
-    context = {'form': form}
-    return render (request, 'new_review.html', context)
+        form = ReviewForm(user=request.user, ticket=ticket)
+    context = {'form': form, 'ticket': ticket}
+    return render(request, 'new_review.html', context)
 
 @login_required
 def create_ticket_and_review(request):
@@ -79,16 +84,29 @@ def display_feed(request):
     context = {'feed_items': feed_items}
     return render(request,'feed.html',context)
 
+def display_user_posts(request):
+    user = request.user
+    tickets = Ticket.objects.filter(user=user)
+    reviews = Review.objects.filter(user=user)
+
+    posts_items = list(tickets) + list (reviews)
+    posts_items.sort(key=lambda item: item.time_created, reverse=True)
+    context = {'posts_items': posts_items}
+    return render(request,'user_posts.html',context)
+
 @login_required
 def display_followers(request):
     User = get_user_model()
     followed_users = UserFollows.objects.filter(follower=request.user)
     all_users = User.objects.exclude(id=request.user.id)
     not_followed_users = all_users.exclude(id__in=[user.followed.id for user in followed_users])
+    followers = UserFollows.objects.filter(followed=request.user)
+
     context = {
         "followed_users": followed_users,
         "not_followed_users": not_followed_users,
         "count_followed_users": followed_users.count(),
+        "followers": followers,
     }
     return render(request, 'followers.html', context)
 
@@ -120,3 +138,44 @@ def search_user_to_follow(request):
         except User.DoesNotExist:
             pass
     return redirect('display_followers')
+
+@login_required
+def edit_ticket(request, ticket_id):
+    ticket = get_object_or_404(Ticket, id=ticket_id, user=request.user)
+    if request.method == 'POST':
+        form = TicketForm(request.POST, request.FILES, instance=ticket, user=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('feed')
+    else:
+        form = TicketForm(instance=ticket, user=request.user)
+    return render(request, 'edit_ticket.html', {'form': form, 'ticket': ticket})
+
+@login_required
+def delete_ticket(request, ticket_id):
+    ticket = get_object_or_404(Ticket, id=ticket_id, user=request.user)
+    if request.method == 'POST':
+        ticket.delete()
+        return redirect('feed')
+    return render(request, 'delete_confirm.html', {'object': ticket})
+
+
+@login_required
+def edit_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id, user=request.user)
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, instance=review, user=request.user, ticket=review.ticket)
+        if form.is_valid():
+            form.save()
+            return redirect('feed')
+    else:
+        form = ReviewForm(instance=review, user=request.user, ticket=review.ticket)
+    return render(request, 'edit_review.html', {'form': form, 'review': review})
+
+@login_required
+def delete_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id, user=request.user)
+    if request.method == 'POST':
+        review.delete()
+        return redirect('feed')
+    return render(request, 'delete_confirm.html', {'object': review})
