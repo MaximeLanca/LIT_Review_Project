@@ -14,7 +14,7 @@ class Ticket(models.Model):
         return self.title
 
 class Review(models.Model):
-    ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE, related_name="reviews")
+    ticket = models.OneToOneField(to=Ticket, on_delete=models.CASCADE,related_name="review")
     rating = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(5)])
     headline = models.CharField(max_length=128)
@@ -28,3 +28,4 @@ class UserFollows(models.Model):
     followed = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='followers')
     class Meta:
         unique_together = ('follower', 'followed', )
+

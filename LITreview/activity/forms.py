@@ -22,17 +22,21 @@ class ReviewForm(forms.ModelForm):
     RATING_CHOICES = [(i, str(i)) for i in range(6)]
     rating = forms.ChoiceField(
         choices=RATING_CHOICES,
-        widget=forms.RadioSelect,
+        widget=forms.RadioSelect(attrs={'class': 'radio-wrapper'}),
         label="Note"
     )
     class Meta:
         model = Review
         exclude = ['user', 'ticket']
-
+        labels = {
+                'headline': 'Commentaire',
+                'body': 'Votre critique',
+            }
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user',None)
         self.ticket = kwargs.pop('ticket', None)
         super().__init__(*args, **kwargs)
+        self.fields['rating'].widget.attrs.update({'class': 'radio-wrapper'})
 
     def save(self,commit=True):
         review=super().save(commit=False)

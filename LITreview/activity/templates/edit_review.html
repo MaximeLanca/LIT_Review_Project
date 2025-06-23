@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}new_review{% endblock %}
+{% block title %}Edition de critique{% endblock %}
 
 {% block head_css %}
-<link rel="stylesheet" href="">
+<link rel="stylesheet" href="{% static 'litreview/styles.css' %}">
 {% endblock %}
 
 {% block content %}
-    <main>
+    <section>
         <h2>Modifier votre review</h2>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Enregistrer</button>
         </form>
-    </main>
+    </section>
 {% endblock %}

@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import models
 from django.contrib import messages
 
-
+@login_required
 def create_ticket(request):
     if request.method == 'POST':
         form = TicketForm(request.POST, request.FILES)
@@ -24,7 +24,7 @@ def create_ticket(request):
 @login_required
 def create_review(request, ticket_id):
     ticket = get_object_or_404(Ticket, id=ticket_id)
-    if ticket.reviews.exists():
+    if hasattr(ticket, 'review'):
         messages.error(request, "Ce ticket a déjà été critiqué.")
         return redirect('feed')
     if request.method == 'POST':
@@ -71,6 +71,7 @@ def home(request):
     #context = {'flux' : flux,}
     return render (request, 'home.html')
 
+@login_required
 def display_feed(request):
     user = request.user
     followed_users = user.followed_users.values_list('followed_id', flat=True)
@@ -83,7 +84,7 @@ def display_feed(request):
     feed_items.sort(key=lambda item: item.time_created, reverse=True)
     context = {'feed_items': feed_items}
     return render(request,'feed.html',context)
-
+@login_required
 def display_user_posts(request):
     user = request.user
     tickets = Ticket.objects.filter(user=user)
@@ -141,20 +142,31 @@ def search_user_to_follow(request):
 
 @login_required
 def edit_ticket(request, ticket_id):
+
     ticket = get_object_or_404(Ticket, id=ticket_id, user=request.user)
-    if request.method == 'POST':
+
+    if request.user != ticket.user:
+        messages.error(request, "Vous n'avez pas l'autorisation de modifier ce ticket.")
+        return redirect('feed')
+    elif request.method == 'POST':
         form = TicketForm(request.POST, request.FILES, instance=ticket, user=request.user)
         if form.is_valid():
             form.save()
             return redirect('feed')
     else:
         form = TicketForm(instance=ticket, user=request.user)
+
     return render(request, 'edit_ticket.html', {'form': form, 'ticket': ticket})
 
 @login_required
 def delete_ticket(request, ticket_id):
+
     ticket = get_object_or_404(Ticket, id=ticket_id, user=request.user)
-    if request.method == 'POST':
+
+    if request.user != ticket.user:
+        messages.error(request,"Vous n'avez pas l'autorisation de supprimer ce ticket.")
+        return redirect('feed')
+    elif request.method == 'POST':
         ticket.delete()
         return redirect('feed')
     return render(request, 'delete_confirm.html', {'object': ticket})
@@ -162,20 +174,30 @@ def delete_ticket(request, ticket_id):
 
 @login_required
 def edit_review(request, review_id):
+
     review = get_object_or_404(Review, id=review_id, user=request.user)
-    if request.method == 'POST':
+
+    if request.user != review.user:
+        messages.error(request,"Vous n'avez pas l'autorisation de modifier cette critique.")
+    elif request.method == 'POST':
         form = ReviewForm(request.POST, instance=review, user=request.user, ticket=review.ticket)
         if form.is_valid():
             form.save()
             return redirect('feed')
     else:
         form = ReviewForm(instance=review, user=request.user, ticket=review.ticket)
+
     return render(request, 'edit_review.html', {'form': form, 'review': review})
 
 @login_required
 def delete_review(request, review_id):
+
     review = get_object_or_404(Review, id=review_id, user=request.user)
-    if request.method == 'POST':
+
+    if request.user != review.user:
+        messages.error(request,"Vous n'avez pas l'autorisation de supprimer cette critique.")
+    elif request.method == 'POST':
         review.delete()
         return redirect('feed')
     return render(request, 'delete_confirm.html', {'object': review})
+

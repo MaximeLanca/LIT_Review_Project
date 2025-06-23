@@ -1,26 +1,40 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <title>{% block title %}Template base{% endblock %}</title>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="{% static 'litreview/styles.css' %}" />
-        <link rel="stylesheet" href="{% static 'activity/new_ticket.css' %}">
-    </head>
-    <body>
-        <header class="border_header">
-            <div class="box_header">
-                <div>
-                    <h4>LITReview</h4>
-                </div>
-                <div class="button_box_header">
-                    <div><a href="{% url 'feed' %}">Flux</a></div>
-                    <div><a href="{% url 'display_user_posts'%}">Posts</a></div>
-                    <div><a href="{% url 'display_followers'%}">Abonnements</a></div>
-                    <div><a href="{% url 'logout' %}">Se déconnecter</a></div>
-                </div>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}LITReview{% endblock %}</title>
+    
+    <link rel="stylesheet" href="{% static 'litreview/styles.css' %}">
+
+    {% block head_css %}{% endblock %}
+</head>
+<body>
+    <header class="border_header">
+        <div class="box_header">
+            <div>
+                <h4>LITReview</h4>
             </div>
-        </header>
-        {% block content %}{% endblock %}           
-    </body>
+            <div class="button_box_header">
+                <div><a href="{% url 'feed' %}">Flux</a></div>
+                <div><a href="{% url 'display_user_posts' %}">Posts</a></div>
+                <div><a href="{% url 'display_followers' %}">Abonnements</a></div>
+                <div><a href="{% url 'logout' %}">Se déconnecter</a></div>
+            </div>
+        </div>
+    </header>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
 </html>

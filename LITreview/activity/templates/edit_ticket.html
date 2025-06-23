@@ -5,15 +5,19 @@
 
 {% block head_css %}
 <link rel="stylesheet" href="">
+<link rel="stylesheet" href="{% static 'litreview/styles.css' %}">
 {% endblock %}
 
 {% block content %}
-    <main>
-        <h2>Modifier votre ticket</h2>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Enregistrer</button>
-        </form>
-    </main>
+    <section class="new-ticket-main">
+        <div class="new-ticket-section">
+            <h2>Modifier votre ticket</h2>
+            <form method="post" enctype="multipart/form-data" class="new-ticket-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Enregistrer"/>
+            </form>
+        </div>
+        
+    </section>
 {% endblock %}

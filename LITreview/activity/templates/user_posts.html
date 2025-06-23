@@ -7,29 +7,39 @@
 {% block head_css %}
 <link rel="stylesheet" href="{% static 'activity/styles.css' %}">
 {% endblock %}
+
 {% block content %}
-<main>
-    <h2>Mes posts</h2>
-    <div>
+<section class="user_post_section ">
+    <h2 class="section-title">Mes posts</h2>
+
+    <div class="btn-bar">
         <a href="{% url 'create_ticket' %}" class="btn">Créer un ticket</a>
-    </div>
-    <div>
         <a href="{% url 'create_ticket_and_review' %}" class="btn">Créer une critique</a>
     </div>
+
     {% for post in posts_items %}
-        <div>
-            {% if post|model_name == 'ticket' %}
-                <h3>[TICKET] {{ post.title }}</h3>
+        <div class="post-block">
+            <div class="ticket-preview">
+                {% if post|model_name == 'ticket' %}
+                <h3 class="ticket-title">[TICKET] {{ post.title }}</h3>
                 <p>{{ post.description }}</p>
-                <p>Posté par : {{ post.user.username }}</p>
+                <p class="post-author">Posté par : {{ post.user.username }}</p>
+
                 {% if post.image %}
-                    <img src="{{ post.image.url }}" alt="Image du ticket">
+                    <img src="{{ post.image.url }}" alt="Image du ticket" style="max-width: 600px;">
                 {% endif %}
-                <a href="{% url 'create_review' post.id %}">Répondre à ce ticket</a>
-                {% if post.user == request.user %}
-                    <a href="{% url 'edit_ticket' post.id %}">Modifier</a>
-                    <a href="{% url 'delete_ticket' post.id %}">Supprimer</a>
-                {% endif %}
+                <div class="user_post_button">
+                    <div>
+                    <a href="{% url 'create_review' post.id %}" class="btn">Répondre à ce ticket</a>
+                    </div>
+                    {% if post.user == request.user %}
+                        <div><a href="{% url 'edit_ticket' post.id %}" class="btn">Modifier</a></div>
+                        <div><a href="{% url 'delete_ticket' post.id %}" class="btn">Supprimer</a></div>
+                    {% endif %}
+                </div>
+                
+            </div>
+            
 
             {% elif post|model_name == 'review' %}
                 <div class="review-block">
@@ -45,21 +55,21 @@
                     <div class="ticket-preview">
                         <p><strong>Ticket - {{ post.ticket.user.username }}</strong></p>
                         <p>{{ post.ticket.title }} - {{ post.ticket.description }}</p>
+
                         {% if post.ticket.image %}
                             <img src="{{ post.ticket.image.url }}" alt="image du ticket" style="max-width: 200px;">
                         {% endif %}
                     </div>
-
-                    {% if post.user == request.user %}
-                        <a href="{% url 'edit_review' post.id %}">Modifier</a>
-                        <a href="{% url 'delete_review' post.id %}">Supprimer</a>
-                    {% endif %}
+                    <div class="user_post_review_button">   
+                        {% if post.user == request.user %}
+                        <a href="{% url 'edit_review' post.id %}" class="btn">Modifier</a>
+                        <a href="{% url 'delete_review' post.id %}" class="btn">Supprimer</a>
+                        {% endif %}
+                    </div>
+                    
                 </div>
             {% endif %}
         </div>
     {% endfor %}
-
-</main>
-
+    </section>
 {% endblock %}
-

@@ -1,5 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
+<link rel="stylesheet" href="{% static 'litreview/styles.css' %}">
 <html lang="fr">
     <head>
         <title>{% block title %}Registration{% endblock %}</title>
@@ -7,12 +8,13 @@
     </head>
     <body>
         {% block content %}
-            <h2>Inscription</h2>
-            <form method="POST"> 
+            <h2>Inscrivez-vous</h2>
+            <form class="registration_position" method="POST"> 
                 {% csrf_token %}
-                {{form.as_p}}
-                <button type="submit">S'incrire</button>
+                {{form.as_div}}
+                <button type="submit">S'incrire</button>    
             </form>
+            
         {% endblock %}
     </body>
 </html>

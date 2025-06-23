@@ -4,20 +4,20 @@
 {% block title %}new_ticket{% endblock %}
 
 {% block head_css %}
-<link rel="stylesheet" href="{% static 'activity/new_ticket.css' %}">
+<link rel="stylesheet" href="{% static 'litreview/styles.css' %}">
 {% endblock %}
 
 {% block content %}
-    <main class="border_base">
-        <section>
-            <form action="" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="title_base">
-                    <p>Créer un ticket</p>
-                </div>
-                {{form.as_p}}
-                <input class="send_button_b" type="submit" value="Envoyer"/>
-            </form>
-        </section>   
-    </main>
-{% endblock %} 
+<section class="new-ticket-main">
+    <div class="new-ticket-section">
+        <form action="" method="POST" enctype="multipart/form-data" class="new-ticket-form">
+            {% csrf_token %}
+            <div class="new-ticket-title">
+                <p>Créer un ticket</p>
+            </div>
+            {{ form.as_p }}
+            <input type="submit" value="Envoyer"/>
+        </form>
+    </div>   
+</section>
+{% endblock %}

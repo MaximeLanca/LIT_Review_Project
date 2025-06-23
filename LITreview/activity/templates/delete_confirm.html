@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content %}
-    <main>
+    <section>
         <h2>Confirmer la suppression</h2>
         <p>Êtes-vous sûr de vouloir supprimer ce post ?</p>
         <form method="post">
@@ -16,7 +16,7 @@
           <button type="submit">Oui, supprimer</button>
           <a href="{% url 'display_user_posts' %}">Annuler</a>
         </form>
-    </main>
+      </section>
     
 {% endblock %}
 

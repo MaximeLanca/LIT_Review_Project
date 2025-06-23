@@ -1,10 +1,22 @@
 from django.contrib import admin
-from activity.models import Ticket, Review
+from .models import Ticket
+from .models import Review
+
 
 @admin.register(Ticket)
 class TicketAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'title', 'user', 'time_created')
+    list_filter = ('user',)
+    search_fields = ('title', 'description')
+    ordering = ('-time_created',)
+
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'ticket', 'user', 'rating', 'headline', 'time_created')
+    list_filter = ('rating', 'user')
+    search_fields = ('headline', 'body')
+    ordering = ('-time_created',)
+
+
+    

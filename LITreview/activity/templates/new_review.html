@@ -4,21 +4,45 @@
 {% block title %}new_review{% endblock %}
 
 {% block head_css %}
-<link rel="stylesheet" href="{% static 'activity/new_review.css' %}">
+<link rel="stylesheet" href="{% static 'litreview/styles.css' %}">
 {% endblock %}
 
 {% block content %}
-    <main>
-        <section class="border_base">
-            <form action="" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <p>Critique du ticket : <strong>{{ ticket.title }}</strong></p>
-                <div>
-                    {{form.as_p}}
-                    <input class="send_button_b" type="submit" value="Créer une critique"/>
+<section class="new-review-main">
+    <div class="new-review-section">
+        <form action="" method="POST" enctype="multipart/form-data" class="new-review-form">
+            {% csrf_token %}
+            <p class="new-review-title">
+                Critique du ticket : <strong>{{ ticket.title }}</strong>
+            </p>
+
+            <div class="ticket-preview-block">
+                <p><strong>Vous êtes en train de poster en réponse à</strong></p>
+                <div class="ticket-box">
+                    <div class="ticket-header">
+                        <span>{{ ticket.user.username }} a demandé une critique</span>
+                        <span class="ticket-date">{{ ticket.time_created|date:"H:i, d F Y" }}</span>
+                    </div>
+                    <p class="ticket-title"><strong>{{ ticket.title }}</strong> - {{ ticket.description }}</p>
+
+                    {% if ticket.image %}
+                        <img src="{{ ticket.image.url }}" alt="Image du ticket" class="ticket-image">
+                    {% endif %}
                 </div>
-            </form>
-        </section>
-    </main>
-    
+            </div>
+            <h2 class="new-review-title">Créer une critique</h2>
+        </form>
+        <form method="POST">
+            <div class="form_review_parameters">
+                {% csrf_token %}
+                {{ form.headline.label_tag }} {{ form.headline }}
+                <label>{{ form.rating.label }}</label>
+                <div id="radio-wrapper">
+                    {{ form.rating }}
+                </div>
+                {{ form.body.label_tag }} {{ form.body }}
+            </div>
+            <input type="submit" value="Envoyer">
+        </form>
+</section>
 {% endblock %}

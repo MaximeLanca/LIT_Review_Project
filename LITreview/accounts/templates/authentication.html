@@ -1,21 +1,32 @@
 {% load static %}
 <!DOCTYPE html>
+
+{% block head_css %}
+<link rel="stylesheet" href="{% static 'litreview/styles.css' %}">
+{% endblock %}
+
 <html lang="fr">
     <head>
         <title>{% block title %}Authentification{% endblock %}</title>
         <meta charset="utf-8">
     </head>
-    <body>
-        {% block content %}
-            <h2>Connection</h2>
-            <form method="POST"> 
-                {% csrf_token %}
-                {{form.as_p}}
-                <button type="submit">Se connecter</button>
-                <p>{{message}}</p>
-                <a href="{% url 'signUp' %}">Inscrivez-vous maintenant</a>
-           
-            </form>
-        {% endblock %}
-    </body>
+    {% block content %}
+        <main class="login_page">
+            <div class="authentification_signup">
+                <p class="signup-link">Inscrivez-vous maintenant</p>
+                <a href="{% url 'signUp' %}" style="text-align: center;">S'inscrire</a>
+            </div>
+            
+            <div class="authentification_signin">
+                <form method="POST" class="login-form"> 
+                    <p class="signup-link">Connectez-vous</p>
+                    {% csrf_token %}
+                    {{ form.as_div }}
+                    <button type="submit" class="btn">Se connecter</button>
+                    <p class="login-message">{{ message }}</p>
+                </form>
+            </div>
+            
+        </main>
+    {% endblock %}
 </html>
