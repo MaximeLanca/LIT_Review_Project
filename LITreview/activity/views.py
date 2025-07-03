@@ -84,6 +84,7 @@ def display_feed(request):
     feed_items.sort(key=lambda item: item.time_created, reverse=True)
     context = {'feed_items': feed_items}
     return render(request,'feed.html',context)
+
 @login_required
 def display_user_posts(request):
     user = request.user
