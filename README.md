@@ -10,20 +10,20 @@ Avant de commencer, installer :
 - (Optionnel) **VS Code / PyCharm**
 
 # 2. Cloner le dépôt
-git clone https://github.com/MaximeLanca/LIT_Review_Project.git
-cd LIT_Review_Project
+- **git clone https://github.com/MaximeLanca/LIT_Review_Project.git**
+- **cd LIT_Review_Project**
 
 # 3. Environnement virtuell
 Créer un environnement Python isolé : python -m venv env
 Activation de l'environnement: (Windows) env\Scripts\Activate.ps1, (macOS/Linux) source env/bin/activate
 
 # 4. Installer les dépendances
-pip install --upgrade pip
-pip install -r requirements.tkt
+- **pip install --upgrade pip**
+- **pip install -r requirements.txt**
 
 # 5. Lancer le serveur local
 python manage.py runserver
 
 Accès: 
-Application : http://127.0.0.1:8000/
-Interface admin : http://127.0.0.1:8000/admin/
+- **Application : http://127.0.0.1:8000/**
+- **Interface admin : http://127.0.0.1:8000/admin/**
