@@ -14,8 +14,8 @@ Avant de commencer, installer :
 - **cd LIT_Review_Project**
 
 # 3. Environnement virtuell
-Créer un environnement Python isolé : python -m venv env
-Activation de l'environnement: (Windows) env\Scripts\Activate.ps1, (macOS/Linux) source env/bin/activate
+- **Créer un environnement Python isolé : python -m venv env**
+- **Activation de l'environnement: (Windows) env\Scripts\Activate.ps1, (macOS/Linux) source env/bin/activate**
 
 # 4. Installer les dépendances
 - **pip install --upgrade pip**
@@ -24,6 +24,6 @@ Activation de l'environnement: (Windows) env\Scripts\Activate.ps1, (macOS/Linux)
 # 5. Lancer le serveur local
 python manage.py runserver
 
-Accès: 
+# 6. Accès: 
 - **Application : http://127.0.0.1:8000/**
 - **Interface admin : http://127.0.0.1:8000/admin/**
