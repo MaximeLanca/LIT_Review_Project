@@ -40,6 +40,7 @@
 
             {% elif item|model_name == 'review' %}
                 <div class="review-block">
+                    <p>{{item.user.username}} a posté une review.</p>
                     <h3>{{ item.headline }} -
                         {% for i in "12345"|slice:":item.rating"|make_list %}
                             ★

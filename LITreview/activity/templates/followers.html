@@ -22,12 +22,7 @@
         {% endfor %}
     </ul>   
 
-    <h3>Suggestion de personne</h3>
-    <ul>
-        {% for user in all_users %}
-            <li>{{ user.username }}</li>
-        {% endfor %}
-    </ul>
+    <h3>Rechercher une personne</h3>
 
     <form class="followers_form" method="post" action="{% url 'search_user_to_follow' %}">
         {% csrf_token %}
